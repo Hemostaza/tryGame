@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.List;
+
 public class TileMap {
     private Tile[][] tiles = new Tile[8][8];
 
@@ -13,11 +15,11 @@ public class TileMap {
     private static float dimension = 64;
 
     public TileMap() {
-        createTileMap();
     }
 
-    public void createTileMap() {
+    public void createTileMap(List<Pawn> pawnList) {
         Texture textureToUse;
+        Tile tile;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (i % 2 == 0) {
@@ -29,7 +31,16 @@ public class TileMap {
                         textureToUse = blackTileTexture;
                     } else textureToUse = whiteTileTexture;
                 }
-                tiles[i][j] = new Tile(textureToUse, i , j );
+                tile = new Tile(textureToUse, i, j);
+                if (textureToUse == blackTileTexture) {
+                    if(j<3){
+                        pawnList.add(new BluePawn(tile));
+                    }
+                    if(j>4){
+                        pawnList.add(new RedPawn(tile));
+                    }
+                }
+                tiles[i][j] = tile;
             }
         }
     }
@@ -40,7 +51,7 @@ public class TileMap {
             for (int j = 0; j < 8; j++) {
                 Tile tile = tiles[i][j];
                 tile.setPosition(i, j);
-                batch.draw(tile.getTexture(), i*dimension, j*dimension);
+                batch.draw(tile.getTexture(), i * dimension, j * dimension);
             }
         }
         batch.end();
@@ -54,7 +65,7 @@ public class TileMap {
         return tiles;
     }
 
-    public void dispose(){
+    public void dispose() {
         blackTileTexture.dispose();
         whiteTileTexture.dispose();
     }

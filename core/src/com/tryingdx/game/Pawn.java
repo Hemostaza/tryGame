@@ -11,6 +11,7 @@ public class Pawn extends Rectangle {
     public Texture texture;
     private Tile tile;
     final float dimension = 64;
+    PawnSide side;
 
     public Pawn() {
         x = 0;
@@ -19,7 +20,13 @@ public class Pawn extends Rectangle {
 
     public Pawn(Tile parent) {
         this.tile = parent;
-        changePosition(parent);
+        setPosition(parent);
+    }
+
+    public void setPosition(Tile parent){
+        this.x = parent.getX();
+        this.y = parent.getY();
+        parent.setPawn(this);
     }
 
     public Tile getTileParent() {
@@ -49,9 +56,13 @@ public class Pawn extends Rectangle {
             Gdx.app.log("Move", this.toString() + " Wrong move, on white");
             return false;
         }
-        float diffX = newTile.getX() - tile.getX();
+        float diffX = Math.abs(newTile.getX() - tile.getX());
         float diffY = newTile.getY() - tile.getY();
-        if (diffX > 1 || diffY > 1) {
+        if(diffY!=side.side){
+            Gdx.app.log("Move", this.toString() + " Wrong move, backward");
+            return false;
+        }
+        if (diffX > 1) {
             Gdx.app.log("Move", this.toString() + " Wrong move, to far");
             return false;
         }
@@ -65,5 +76,15 @@ public class Pawn extends Rectangle {
 
     public void dispose(){
         texture.dispose();
+    }
+}
+
+enum PawnSide{
+    UP(-1),
+    DOWN(1);
+
+    public final int side;
+    private PawnSide(int side){
+        this.side = side;
     }
 }

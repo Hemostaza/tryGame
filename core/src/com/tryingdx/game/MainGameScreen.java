@@ -27,14 +27,14 @@ public class MainGameScreen implements Screen {
         selector = new Selector(camera, tileMap);
         Gdx.input.setInputProcessor(selector);
 
-        tileMap.createTileMap();
+        tileMap.createTileMap(pawnList);
         //Gdx.app.log("Tile","Tile 2,2 ".getPawn());
         Ray ray = camera.getPickRay(0,0);
 
-        Pawn p = new BluePawn(tileMap.getTileOn(1,0));
-        pawnList.add(p);
-        p.changePosition(tileMap.getTileOn(2,1));
-        p.changePosition(tileMap.getTileOn(2,2));
+//        Pawn p = new BluePawn(tileMap.getTileOn(1,0));
+//        pawnList.add(p);
+//        p.changePosition(tileMap.getTileOn(2,1));
+//        p.changePosition(tileMap.getTileOn(2,2));
 
     }
 
